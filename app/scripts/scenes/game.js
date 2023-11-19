@@ -9,8 +9,11 @@ export default class Game extends Phaser.Scene {
 
   create(/* data */) {
     this.border = this.getMarginConfig();
-    
+    this.frameCount = 0;
     this.playableField = this.getPlayableFieldConfig();
+    this.ia = {
+      errorY: 0,
+    };
     
     let graphics = this.add.graphics();
     graphics.fillStyle(this.border.color, 1);
@@ -20,9 +23,22 @@ export default class Game extends Phaser.Scene {
     
     this.setupKeyboard();
     
-    this.ball = new Ball(this, this.cameras.main.width / 2, this.cameras.main.height / 2, 10);
+    let ballY = Phaser.Math.Between(this.border.margin, this.border.margin + this.playableField.height);
+
+    this.ball = new Ball(this, this.cameras.main.width / 2, ballY, 10);
     this.ball.velocity = new Phaser.Math.Vector2(150, 150);
+    this.physics.add.collider(this.ball, this.player1);
+    this.physics.add.collider(this.ball, this.player2);
     this.createPhysicsBorders();
+
+    this.player1ScoreText = this.add.text(100, 50, 'Player 1: 0', { fontSize: '28px', fill: '#FFF' });
+    this.player2ScoreText = this.add.text(this.cameras.main.width - 300, 50, 'Player 2: 0', { fontSize: '28px', fill: '#FFF' });
+  }
+
+  updateScoreDisplay() {
+    // Actualizar el texto de los puntajes
+    this.player1ScoreText.setText('Player 1: ' + this.player1.score);
+    this.player2ScoreText.setText('Player 2: ' + this.player2.score);
   }
 
   createPhysicsBorders() {
@@ -30,25 +46,16 @@ export default class Game extends Phaser.Scene {
     // Crea un grupo para los bordes físicos
     this.borders = this.physics.add.staticGroup();
   
-    // Crea los bordes físicos en las posiciones de los bordes gráficos
-    // Asegúrate de tener una imagen 1x1 pixel transparente cargada con la clave 'border'
-    this.borders.add(this.leftBorder); // Borde izquierdo
-    this.borders.add(this.rightBorder); // Borde derecho
-    this.borders.add(this.upperBorder); // Borde superior
-    this.borders.add(this.bottomBorder); // Borde inferior
-    
-  
-    // Añade la colisión entre la pelota y los bordes físicos
+    this.borders.add(this.upperBorder); 
+    this.borders.add(this.bottomBorder); 
     this.physics.add.collider(this.ball, this.borders);
-
-    this.physics.add.collider(this.ball, this.player1);
-    this.physics.add.collider(this.ball, this.player2);
+    
   }  
 
   addPlayers(){
     let width = this.cameras.main.width;
-    this.player1 = new Player(this, this.border.margin * 1.7, this.cameras.main.height / 2, 10, 100);
-    this.player2 = new Player(this, width - this.border.margin * 1.7, this.cameras.main.height / 2, 10, 100);
+    this.player1 = new Player(this, this.border.margin * 1.7, this.cameras.main.height / 2, 10, 70);
+    this.player2 = new Player(this, width - this.border.margin * 1.7, this.cameras.main.height / 2, 10, 70);
     
     this.player1.velocity = 5;
     this.player2.velocity = 5;
@@ -73,7 +80,7 @@ export default class Game extends Phaser.Scene {
 
   drawMiddleLine(graphics){
     let width = this.cameras.main.width;
-    graphics.fillRect(((width - this.border.width) / 2)+this.border.margin, this.border.margin, this.border.width, this.playableField.height);
+    graphics.fillRect(width / 2 - this.border.width, this.border.margin, this.border.width, this.playableField.height);
   }
 
   drawUpperBorder() {
@@ -130,9 +137,40 @@ export default class Game extends Phaser.Scene {
     } else {
       this.player2.stop();
     }
+    this.frameCount++;
+    this.moveComputerPaddle();
 
     // Actualizar jugadores
     this.player1.update();
     this.player2.update();
+
+    if (this.ball.x < this.border.margin) {
+      // La pelota pasó el borde izquierdo, el jugador de la derecha anota
+      this.player2.score += 1;
+      this.resetBallAndScores();
+    } else if (this.ball.x > this.cameras.main.width - this.border.margin) {
+      // La pelota pasó el borde derecho, el jugador de la izquierda anota
+      this.player1.score += 1;
+      this.resetBallAndScores();
+    }
+
+  }
+
+  moveComputerPaddle() {   
+    if (this.frameCount % 30 === 0){
+      this.ia.errorY = this.ball.y + Phaser.Math.Between(-this.player2.height/2, this.player2.height/2);
+    }
+    if (this.frameCount % 1 === 0) {
+      if (this.ia.errorY < this.player2.y && this.player2.y > this.border.margin) {
+        this.player2.y -= this.player2.velocity;
+      } else if (this.ia.errorY > this.player2.y && this.player2.y < this.cameras.main.height - this.border.margin) {
+        this.player2.y += this.player2.velocity;
+      }
+    }
+  }
+
+  resetBallAndScores() {
+    this.ball.resetBall();
+    this.updateScoreDisplay();
   }
 }

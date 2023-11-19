@@ -8,6 +8,7 @@ export default class Player extends Phaser.GameObjects.Rectangle {
         this.maxY = scene.playableField.height + this.minY;
         // Propiedades personalizadas
         this.velocity = 0; // Velocidad inicial de la paleta
+        this.score = 0;
         stop();
     }
 

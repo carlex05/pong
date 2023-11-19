@@ -9,8 +9,38 @@ export default class Ball extends Phaser.GameObjects.Ellipse {
         this.body.setCollideWorldBounds(false); // Para que la pelota rebote en los bordes
         this.body.setBounce(1, 1); // Establecer el rebote a 1 para que la pelota no pierda energía
 
-        // Establecer la velocidad inicial de la pelota
-        this.body.velocity.set(200, 200); // La pelota rebotará con la misma energía con la que colisiona
+        this.resetBall();
     }
+
+    resetBall() {
+        // Velocidad base en el eje Y
+        let baseSpeedY = 200; // Ajusta este valor según sea necesario
+        let directionY = Phaser.Math.Between(-1, 1);
+        while(directionY === 0){
+            directionY = Phaser.Math.Between(-1, 1);
+        }
+        baseSpeedY *= directionY;
+
+        // Velocidad aleatoria en el eje X
+        let speedX = 200;
+        let directionX = Phaser.Math.Between(-1, 1);
+        while(directionX === 0) { // Asegúrate de que la velocidad no sea 0
+            directionX = Phaser.Math.Between(-1, 1);
+        }
+        speedX = speedX * directionX;
+        // Asignar la velocidad a la pelota
+        this.velocity = new Phaser.Math.Vector2(speedX, baseSpeedY);
+
+        // Restablece la posición de la pelota al centro
+        let ballY = Phaser.Math.Between(this.scene.border.margin, this.scene.border.margin + this.scene.playableField.height);
+        this.x = this.scene.cameras.main.width / 2;
+        this.y = ballY;
+
+        // Asegúrate de que el cuerpo de física de la pelota también se actualice
+        if (this.body) {
+            this.body.velocity.set(speedX, baseSpeedY);
+        }
+    }
+
 
 }
