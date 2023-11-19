@@ -2,6 +2,8 @@ export default class Player extends Phaser.GameObjects.Rectangle {
     constructor(scene, x, y, width, height) {
         super(scene, x, y, width, height, 0xffffff); // 0xffffff es el color blanco
         scene.add.existing(this); // Añade esta paleta al canvas de la escena
+        this.scene.physics.add.existing(this);
+        this.body.setImmovable(true);
         this.minY = scene.border.margin;
         this.maxY = scene.playableField.height + this.minY;
         // Propiedades personalizadas
