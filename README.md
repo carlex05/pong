@@ -47,7 +47,7 @@ Contributions are always welcome! If you have ideas for improving the game or ad
 
 
 ## Credits
-Developed by [Your Name or Alias]
+Developed by Carlos Gómez
 - Inspired by the classic arcade game Pong.
 - Developed using [Phaser 3](https://phaser.io/).
 - This project is part of a coding challenge organized by [Coding Challenges](https://codingchallenges.fyi/challenges/challenge-pong/).
