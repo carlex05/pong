@@ -1,42 +1,56 @@
-# [Pong](https://example.com/)
+# Pong Game
 
-![Screenshot](screenshot.png)
+## Description
+Pong Game is a modern take on the classic Pong game. Developed using Phaser 3, this project is a fun and educational foray into game development with web technologies.
 
----
+## Features
+- Single player mode against AI and two-player mode.
+- Configurable options, including AI difficulty and control keys.
+- Ball speed increases over time in Advanced mode.
 
-Congratulations, your new project is ready!
+## Installation
+To run Pong Game in your local environment, follow these steps:
 
-Follow the instructions below and start developing your games right away.
-
-
-## First steps
-
-Run your project with `yarn start` (or `npm start` if you prefer npm).
-
-
-## Package Scripts
-
-The following package scripts are also available to manage your project:
-
->   **HINT**: If you prefer npm, run these scripts with `npm run` instead.
+1. Clone the repository:
 
 ```sh
-yarn clean     # Manually deletes previous distribution files.
-yarn dist      # Prepares the game for distribution.
-yarn format    # Uses ESLint to format and remove lint issues.
-yarn lint      # Checks scripts for lint issues using ESLint.
+git clone https://github.com/carlex05/pong.git
 ```
 
-## Tutorial
+2. Navigate to the project directory:
 
-No idea of what to do next? Follow this [tutorial][t] and learn more about
-Phaser 3 and `generator-phaser-plus`.
+```sh
+cd pong-game
+```
 
-[t]: https://github.com/rblopes/generator-phaser-plus#a-brief-tutorial
+3. Install the dependencies:
 
+```sh
+npm install
+```
+
+## Usage
+To start the game in development mode, run:
+
+```sh
+npm start
+```
+
+To build a distribution version, run:
+
+```sh
+npm run dist
+```
+
+## Contribution
+Contributions are always welcome! If you have ideas for improving the game or adding new features, please feel free to contribute. We ask that you follow good development practices and make constructive contributions. Although we do not have a `CONTRIBUTING.md` file, your pull requests and suggestions are appreciated.
 
 ## License
+This project is licensed under [specify license type]. You can use, modify, and distribute it under certain conditions. For more information, see the `LICENSE` file in this repository.
 
-Should you consider distributing your game as an open source project, please
-[choose and include a LICENSE file](http://choosealicense.com/) for your
-project.
+## Credits
+Developed by [Your Name or Alias]
+- Inspired by the classic arcade game Pong.
+- Developed using [Phaser 3](https://phaser.io/).
+- This project is part of a coding challenge organized by [Coding Challenges](https://codingchallenges.fyi/challenges/challenge-pong/).
+

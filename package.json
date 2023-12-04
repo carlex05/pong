@@ -5,7 +5,7 @@
   "url": "https://example.com/",
   "scripts": {
     "clean": "gulp clean",
-    "dist": "gulp dist",
+    "dist": "gulp --openssl-legacy-provider dist",
     "format": "eslint \"app/scripts/**/*.js\" --fix",
     "lint": "eslint \"app/scripts/**/*.js\"",
     "start": "gulp"
