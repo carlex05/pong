@@ -203,10 +203,10 @@ export default class Game extends Phaser.Scene {
   }
 
   endGame(winnerMessage) {
-    let winText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2, winnerMessage, { fontSize: '32px', fill: '#FFF' })
+    this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2, winnerMessage, { fontSize: '32px', fill: '#FFF' })
       .setOrigin(0.5, 0.5);
 
-    let restartText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 + 50, 'Click to Restart', { fontSize: '24px', fill: '#FFF' })
+    this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 + 50, 'Click to Restart', { fontSize: '24px', fill: '#FFF' })
       .setOrigin(0.5, 0.5)
       .setInteractive()
       .on('pointerdown', () => this.scene.start('MainMenu'));
