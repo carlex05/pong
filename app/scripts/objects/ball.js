@@ -15,19 +15,12 @@ export default class Ball extends Phaser.GameObjects.Ellipse {
     resetBall() {
         // Velocidad base en el eje Y
         let baseSpeedY = 200; // Ajusta este valor según sea necesario
-        let directionY = Phaser.Math.Between(-1, 1);
-        while(directionY === 0){
-            directionY = Phaser.Math.Between(-1, 1);
-        }
-        baseSpeedY *= directionY;
+        
+        baseSpeedY *= this.calculateRandomDirection();
 
         // Velocidad aleatoria en el eje X
         let speedX = 200;
-        let directionX = Phaser.Math.Between(-1, 1);
-        while(directionX === 0) { // Asegúrate de que la velocidad no sea 0
-            directionX = Phaser.Math.Between(-1, 1);
-        }
-        speedX = speedX * directionX;
+        speedX *= this.calculateRandomDirection();
         // Asignar la velocidad a la pelota
         this.velocity = new Phaser.Math.Vector2(speedX, baseSpeedY);
 
@@ -36,10 +29,17 @@ export default class Ball extends Phaser.GameObjects.Ellipse {
         this.x = this.scene.cameras.main.width / 2;
         this.y = ballY;
 
-        // Asegúrate de que el cuerpo de física de la pelota también se actualice
         if (this.body) {
             this.body.velocity.set(speedX, baseSpeedY);
         }
+    }
+
+    calculateRandomDirection(){
+        let direction = Phaser.Math.Between(-1, 1);
+        while(direction === 0){
+            direction = Phaser.Math.Between(-1, 1);
+        }
+        return direction;
     }
 
 

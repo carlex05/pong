@@ -6,4 +6,6 @@
  *  Expose the required game scenes using this module.
  */
 
+
+export {default as MainMenu} from './main-menu';
 export {default as Game} from './game';
