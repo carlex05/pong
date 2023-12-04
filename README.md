@@ -43,10 +43,8 @@ npm run dist
 ```
 
 ## Contribution
-Contributions are always welcome! If you have ideas for improving the game or adding new features, please feel free to contribute. We ask that you follow good development practices and make constructive contributions. Although we do not have a `CONTRIBUTING.md` file, your pull requests and suggestions are appreciated.
+Contributions are always welcome! If you have ideas for improving the game or adding new features, please feel free to contribute. We ask that you follow good development practices and make constructive contributions. Your pull requests and suggestions are appreciated.
 
-## License
-This project is licensed under [specify license type]. You can use, modify, and distribute it under certain conditions. For more information, see the `LICENSE` file in this repository.
 
 ## Credits
 Developed by [Your Name or Alias]
