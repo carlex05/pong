@@ -14,6 +14,7 @@ export default class Game extends Phaser.Scene {
     this.playableField = this.getPlayableFieldConfig();
     this.ia = {
       errorY: 0,
+      updateTimer: 0,
     };
 
     let graphics = this.add.graphics();
@@ -27,7 +28,6 @@ export default class Game extends Phaser.Scene {
     let ballY = Phaser.Math.Between(this.border.margin, this.border.margin + this.playableField.height);
 
     this.ball = new Ball(this, this.cameras.main.width / 2, ballY, 10);
-    this.ball.velocity = new Phaser.Math.Vector2(150, 150);
     this.physics.add.collider(this.ball, this.player1);
     this.physics.add.collider(this.ball, this.player2);
     this.createPhysicsBorders();
@@ -41,7 +41,7 @@ export default class Game extends Phaser.Scene {
   setDifficulty(difficulty) {
     if (difficulty === 'Advanced') {
       this.ballSpeedIncrementTimer = this.time.addEvent({
-        delay: 1000, 
+        delay: 1000,
         callback: this.incrementBallSpeed,
         callbackScope: this,
         loop: true
@@ -143,7 +143,7 @@ export default class Game extends Phaser.Scene {
   }
 
 
-  update() {
+  update(time, delta) {
     if (this.player1UpKey.isDown) {
       this.player1.moveUp();
     } else if (this.player1DownKey.isDown) {
@@ -161,9 +161,8 @@ export default class Game extends Phaser.Scene {
     }
     this.frameCount++;
     if (this.configData.isCpuPlayer)
-      this.moveComputerPaddle();
+      this.moveComputerPaddle(delta);
 
-    // Actualizar jugadores
     this.player1.update();
     this.player2.update();
 
@@ -177,16 +176,17 @@ export default class Game extends Phaser.Scene {
 
   }
 
-  moveComputerPaddle() {
-    if (this.frameCount % 40 === 0) {
-      this.ia.errorY = this.ball.y + Phaser.Math.Between(-this.player2.height / 12, this.player2.height / 12);
+  moveComputerPaddle(delta) {
+    this.ia.updateTimer += delta;
+    if (this.ia.updateTimer >= 231) { 
+      this.ia.errorY = this.ball.y + Phaser.Math.Between(-this.player2.height / 8, this.player2.height / 8);
+      this.ia.updateTimer = 0;
     }
-    if (this.frameCount % 1 === 0) {
-      if (this.ia.errorY < this.player2.y && this.player2.y > this.border.margin) {
-        this.player2.moveUp();
-      } else if (this.ia.errorY > this.player2.y && this.player2.y < this.cameras.main.height - this.border.margin) {
-        this.player2.moveDown();
-      }
+
+    if (this.ia.errorY < this.player2.y && this.player2.y > this.border.margin) {
+      this.player2.moveUp();
+    } else if (this.ia.errorY > this.player2.y && this.player2.y < this.cameras.main.height - this.border.margin) {
+      this.player2.moveDown();
     }
   }
 
@@ -198,14 +198,14 @@ export default class Game extends Phaser.Scene {
       this.endGame('Player 2 Wins!');
       return;
     }
-    this.ball.resetBall();
     this.updateScoreDisplay();
+    this.ball.resetBall();
+    
   }
 
   endGame(winnerMessage) {
     this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2, winnerMessage, { fontSize: '32px', fill: '#FFF' })
       .setOrigin(0.5, 0.5);
-
     this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 + 50, 'Click to Restart', { fontSize: '24px', fill: '#FFF' })
       .setOrigin(0.5, 0.5)
       .setInteractive()
